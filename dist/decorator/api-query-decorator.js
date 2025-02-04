@@ -2,7 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getQueryParameter = exports.Query = void 0;
 const query = Symbol('query');
-const Query = (classType) => (target, propertyKey, parameterIndex) => {
+const Query = (classTypeParam) => (target, propertyKey, parameterIndex) => {
+    const parameterTypes = Reflect.getMetadata('design:paramtypes', target, propertyKey);
+    const classType = classTypeParam ?? parameterTypes[parameterIndex].prototype.constructor;
     Reflect.defineMetadata(query, {
         parameterIndex,
         classType,

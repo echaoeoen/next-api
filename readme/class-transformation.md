@@ -24,7 +24,7 @@ And, later we make use of the UserRequest in the request route handler.
 
 class UserHandler {
     @POST()
-    register(@Body(UserRequest) req: UserRequest) {
+    register(@Body() req: UserRequest) {
         await UserService.create(req);
     }
 }

@@ -154,7 +154,7 @@ class User {
 
   @Post()
   @HttpCode(201)
-  async createUser(@Body(UserRequest) body: UserRequest) {
+  async createUser(@Body() body: UserRequest) {
     return await UserRepository.create(body);
   }
 }

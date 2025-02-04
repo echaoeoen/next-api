@@ -13,10 +13,23 @@ describe('Query Decorator', () => {
     }
 
     const metadata = getQueryParameter(TestClass.prototype, 'someMethod');
-    
+
     expect(metadata).toEqual({
       parameterIndex: 0, // First parameter in someMethod
       classType: MockQueryClass, // Class provided to Query decorator
+    });
+  });
+
+  it('should store metadata for the query parameter with inferred class type', () => {
+    class TestClass {
+      someMethod(@Query() queryParam: MockQueryClass) {}
+    }
+
+    const metadata = getQueryParameter(TestClass.prototype, 'someMethod');
+
+    expect(metadata).toEqual({
+      parameterIndex: 0, // First parameter in someMethod
+      classType: MockQueryClass, // Class inferred from parameter type
     });
   });
 });

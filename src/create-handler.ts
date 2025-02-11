@@ -18,6 +18,7 @@ function getHandler (handlers: {
             url = url.substring(0, queryIndexStart);
         }
         const urlParts = url.split('/');
+
         for (const p in template) {
             if(template[p].startsWith(':')) {
                 if (params?.params) {
@@ -29,7 +30,8 @@ function getHandler (handlers: {
             };
             if(template[p] !== urlParts[p]) return false;
         }
-        return true;
+        
+        return template.length === urlParts.length;
     });
     return handler;
 }
@@ -50,7 +52,7 @@ const createMethodHandler = <T>(instance: T, method: Methods, c: new() => T) => 
         if(!handler) return NextResponse.json({ message: 'Not found'}, { status: StatusCodes.NOT_FOUND});
         const methodMiddlewares = getMiddleware(instance, handler.propertyKey);
         const handlerFn: MiddlewareMetadataValue = {
-            fn: (req: NextRequest) => instance[handler?.propertyKey].apply(instance, [req, p])
+            fn: (req: NextRequest) => instance[handler?.propertyKey].apply(instance, [req, p, handler.path])
         }
         const middlewares = [...globalMiddlewares, ...methodMiddlewares, handlerFn];
         const [error, resp] = await awaitToError<HttpError>(executeMiddlewares(middlewares, req as any));
@@ -112,7 +114,6 @@ export const createHandler = <T>(target: new () => T) => {
 export const createApiRouteHandler = <T>(target: new () => T) => {
     const instance = new target();
     const globalMiddlewares = getMiddleware(target);
-    console.log(globalMiddlewares)
     return async (req: NextApiRequest, res: NextApiResponse) => {
         const handlers = getHandlerMetadata(instance, req.method as string);
         if (handlers.length === 0) {
@@ -126,7 +127,7 @@ export const createApiRouteHandler = <T>(target: new () => T) => {
         }
         const methodMiddlewares = getMiddleware(instance, handler?.propertyKey);
         const handlerFn: MiddlewareMetadataValue = {
-            fn: (req: NextApiRequest) => instance[handler?.propertyKey].apply(this, [req, { res }])
+            fn: (req: NextApiRequest) => instance[handler?.propertyKey].apply(this, [req, { res }, handler?.path])
         }
         const middlewares = [...globalMiddlewares, ...methodMiddlewares, handlerFn];
 

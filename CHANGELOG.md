@@ -1,3 +1,10 @@
+## [1.0.5](https://github.com/echaoeoen/next-api/compare/v1.0.4...v1.0.5) (2025-02-11)
+
+
+### Bug Fixes
+
+* add middleware ([64e394b](https://github.com/echaoeoen/next-api/commit/64e394bbe1846c8f2b90aa31890bd38b3ce04516))
+
 ## [1.0.4](https://github.com/echaoeoen/next-api/compare/v1.0.3...v1.0.4) (2025-02-11)
 
 

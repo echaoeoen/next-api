@@ -40,12 +40,12 @@ async function executeMiddlewares(middlewares, req, index = 0) {
         return middlewares[index].fn(req, () => executeMiddlewares(middlewares, req, index + 1));
     }
 }
-const createMethodHandler = (instance, method) => {
+const createMethodHandler = (instance, method, c) => {
     const handlers = (0, api_decorator_1.getHandlerMetadata)(instance, method);
     if (handlers.length === 0) {
         return undefined;
     }
-    const globalMiddlewares = (0, api_middleware_decorator_1.getMiddleware)(instance);
+    const globalMiddlewares = (0, api_middleware_decorator_1.getMiddleware)(c);
     return async (req, p) => {
         const handler = getHandler(handlers, req, p);
         if (!handler)
@@ -73,7 +73,7 @@ const createHandler = (target) => {
     const instance = new target();
     const exported = {};
     for (const method of Object.values(api_decorator_1.Methods)) {
-        const m = createMethodHandler(instance, method);
+        const m = createMethodHandler(instance, method, target);
         if (m) {
             exported[method] = m;
         }
@@ -83,6 +83,8 @@ const createHandler = (target) => {
 exports.createHandler = createHandler;
 const createApiRouteHandler = (target) => {
     const instance = new target();
+    const globalMiddlewares = (0, api_middleware_decorator_1.getMiddleware)(target);
+    console.log(globalMiddlewares);
     return async (req, res) => {
         const handlers = (0, api_decorator_1.getHandlerMetadata)(instance, req.method);
         if (handlers.length === 0) {
@@ -94,7 +96,12 @@ const createApiRouteHandler = (target) => {
                 "message": "not found"
             });
         }
-        const [error, resp] = await (0, utils_1.awaitToError)(instance[handler?.propertyKey].apply(this, [req, { res }]));
+        const methodMiddlewares = (0, api_middleware_decorator_1.getMiddleware)(instance, handler?.propertyKey);
+        const handlerFn = {
+            fn: (req) => instance[handler?.propertyKey].apply(this, [req, { res }])
+        };
+        const middlewares = [...globalMiddlewares, ...methodMiddlewares, handlerFn];
+        const [error, resp] = await (0, utils_1.awaitToError)(executeMiddlewares(middlewares, req));
         if (error) {
             const code = error.status || http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR;
             return res.status(code).json({

@@ -46,6 +46,7 @@ const getHeaders = (req) => {
 const handleApiDescriptor = (target, { propertyKey }, descriptor) => {
     const originalMethod = descriptor.value;
     descriptor.value = async function (req, p) {
+        console.log(p);
         const args = [];
         const bodyParameter = (0, api_body_decorator_1.getBodyParameter)(target, propertyKey);
         if (bodyParameter) {
@@ -80,7 +81,7 @@ const handleApiDescriptor = (target, { propertyKey }, descriptor) => {
             };
         }
         (0, api_path_decorator_1.getPathParametersMeta)(target, propertyKey).forEach((params) => {
-            const par = req instanceof server_1.NextRequest ? p?.params[params.pathParameter] : req.query;
+            const par = req.query ? req.query[params.pathParameter] : p?.params[params.pathParameter];
             args[params.parameterIndex] = par;
         });
         const headerParameter = (0, api_header_decorator_1.getHeaderParameter)(target, propertyKey);

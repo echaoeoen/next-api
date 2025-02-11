@@ -1,3 +1,10 @@
+## [1.0.8](https://github.com/echaoeoen/next-api/compare/v1.0.7...v1.0.8) (2025-02-11)
+
+
+### Bug Fixes
+
+* fix path param decorator ([3dd0f88](https://github.com/echaoeoen/next-api/commit/3dd0f88ff0b6de5ebdb2a3575d8c4d715c4d00cb))
+
 ## [1.0.7](https://github.com/echaoeoen/next-api/compare/v1.0.6...v1.0.7) (2025-02-11)
 
 

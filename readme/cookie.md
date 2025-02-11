@@ -2,14 +2,14 @@
 ## Importing the Decorators
 To use the Cookie and CookieParser decorators, import them from your library like so:
 ```ts
-import { CookieParser, Cookies } from 'next-app-router-decorator';
+import { CookieParser, Cookies } from '@aslina/next-app-router-decorator';
 ```
 ## Usage
 `@CookieParser()`
 The `@CookieParser()` decorator injects a Cookies instance into the method, allowing you to access or manipulate cookies programmatically.
 
 ```ts
-import { CookieParser, Cookies } from 'next-app-router-decorator';
+import { CookieParser, Cookies } from '@aslina/next-app-router-decorator';
 
 class UserHandler {
   @POST()

@@ -9,3 +9,4 @@ export * from './api-query-decorator';
 export * from './api-req-decorator';
 export * from './api-request-ip-decorator';
 export * from './api-res-decorator';
+export * from './api-middleware-decorator';

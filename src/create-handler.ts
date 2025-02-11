@@ -3,6 +3,7 @@ import { getHandlerMetadata, getStatusCode, Methods, Params } from './decorator/
 import { StatusCodes } from 'http-status-codes'
 import { awaitToError, HttpError } from './utils';
 import { NextRequest, NextResponse } from 'next/server';
+import { getMiddleware, MiddlewareMetadataValue } from './decorator/api-middleware-decorator';
 
 function getHandler (handlers: {
     propertyKey: string | symbol;
@@ -32,17 +33,27 @@ function getHandler (handlers: {
     });
     return handler;
 }
-
-const createMethodHandler = <T = new () => void>(instance: T, method: Methods) => {
+async function executeMiddlewares(middlewares: MiddlewareMetadataValue[], req: NextRequest & NextApiRequest, index = 0): Promise<unknown> {
+    if (index < middlewares.length) {
+      return middlewares[index].fn(req , () => executeMiddlewares(middlewares, req, index + 1));
+    }
+  }
+const createMethodHandler = <T>(instance: T, method: Methods, c: new() => T) => {
 
     const handlers = getHandlerMetadata(instance, method);
     if (handlers.length === 0) {
         return undefined;
     }
+    const globalMiddlewares = getMiddleware(c);
     return async (req: NextRequest, p: Params) => {
         const handler = getHandler(handlers, req, p);
         if(!handler) return NextResponse.json({ message: 'Not found'}, { status: StatusCodes.NOT_FOUND});
-        const [error, resp] = await awaitToError<HttpError>(instance[handler?.propertyKey].apply(instance, [req, p]));
+        const methodMiddlewares = getMiddleware(instance, handler.propertyKey);
+        const handlerFn: MiddlewareMetadataValue = {
+            fn: (req: NextRequest) => instance[handler?.propertyKey].apply(instance, [req, p])
+        }
+        const middlewares = [...globalMiddlewares, ...methodMiddlewares, handlerFn];
+        const [error, resp] = await awaitToError<HttpError>(executeMiddlewares(middlewares, req as any));
         if (error) {
             const code = error.status || StatusCodes.INTERNAL_SERVER_ERROR;
             return NextResponse.json({
@@ -75,7 +86,7 @@ export const createHandler = <T>(target: new () => T) => {
     const instance = new target();
     const exported: Partial<Record<Methods, (req: NextRequest, p: Params) => Promise<NextResponse<unknown>>>> = {}
     for (const method of Object.values(Methods)) {
-        const m = createMethodHandler(instance, method);
+        const m = createMethodHandler(instance, method, target);
         if (m) {
             exported[method] = m;
         }
@@ -100,6 +111,8 @@ export const createHandler = <T>(target: new () => T) => {
  */
 export const createApiRouteHandler = <T>(target: new () => T) => {
     const instance = new target();
+    const globalMiddlewares = getMiddleware(target);
+    console.log(globalMiddlewares)
     return async (req: NextApiRequest, res: NextApiResponse) => {
         const handlers = getHandlerMetadata(instance, req.method as string);
         if (handlers.length === 0) {
@@ -111,7 +124,13 @@ export const createApiRouteHandler = <T>(target: new () => T) => {
                 "message": "not found"
             })
         }
-        const [error, resp] = await awaitToError<HttpError>(instance[handler?.propertyKey].apply(this, [req, { res }]));
+        const methodMiddlewares = getMiddleware(instance, handler?.propertyKey);
+        const handlerFn: MiddlewareMetadataValue = {
+            fn: (req: NextApiRequest) => instance[handler?.propertyKey].apply(this, [req, { res }])
+        }
+        const middlewares = [...globalMiddlewares, ...methodMiddlewares, handlerFn];
+
+        const [error, resp] = await awaitToError<HttpError>(executeMiddlewares(middlewares, req as any));
 
         if (error) {
             const code = error.status || StatusCodes.INTERNAL_SERVER_ERROR;

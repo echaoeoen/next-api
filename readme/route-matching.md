@@ -11,17 +11,17 @@ class UserHandler {
   }
 
   @Get('/api/users/:id') // this pattern should include the origin path ex: `/api/users`
-  public details(@Query('id') id: string) {
+  public details(@Path('id') id: string) {
     return DB.findUserById(id);
   }
 
   @Get('/api/users/:userId/comments')
-  public comments(@Query('userId') userId: string) {
+  public comments(@Path('userId') userId: string) {
     return DB.findUserComments(userId);
   }
 
   @Get('/api/users/:userId/comments/:commentId')
-  public commentDetails(@Query('userId') userId: string, @Query('commentId') commentId: string) {
+  public commentDetails(@Path('userId') userId: string, @Path('commentId') commentId: string) {
     return DB.findUserCommentById(userId, commentId);
   }
 }

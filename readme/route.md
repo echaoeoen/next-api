@@ -142,7 +142,7 @@ import { createHandler, Body, Get, HttpCode, NotFoundException, Post, Query, Val
 
 class User {
   @Get()
-  async fetchUser(@Query('id') id: string) {
+  async fetchUser(@Path('id') id: string) {
     const user = await DB.findUserById(id);
 
     if (!user) {

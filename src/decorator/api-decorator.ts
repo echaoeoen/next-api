@@ -57,7 +57,7 @@ const handleApiDescriptor = (target, {
 }, descriptor: PropertyDescriptor) => {
     const originalMethod = descriptor.value;
     descriptor.value = async function (req: NextRequest | NextApiRequest, p?: Params) {
-
+        console.log(p)
         const args: any[] = [];
         const bodyParameter = getBodyParameter(target, propertyKey);
         if (bodyParameter) {
@@ -94,7 +94,7 @@ const handleApiDescriptor = (target, {
             };
         }
         getPathParametersMeta(target, propertyKey).forEach((params) => {
-            const par = req instanceof NextRequest ? p?.params[params.pathParameter] : req.query
+            const par = (req as NextApiRequest).query ? (req as NextApiRequest).query[params.pathParameter]:  p?.params[params.pathParameter]; 
             args[params.parameterIndex] = par;
         });
         const headerParameter = getHeaderParameter(target, propertyKey);

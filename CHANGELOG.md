@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/echaoeoen/next-api/compare/v1.0.3...v1.0.4) (2025-02-11)
+
+
+### Bug Fixes
+
+* "Revert "fix: add prettier and store parameter type as metadata" ([#2](https://github.com/echaoeoen/next-api/issues/2))" ([0f4f235](https://github.com/echaoeoen/next-api/commit/0f4f2359548e4cb38382b5da5458c7513622585f))
+
 ## [1.0.3](https://github.com/echaoeoen/next-api/compare/v1.0.2...v1.0.3) (2025-02-04)
 
 

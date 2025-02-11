@@ -3,9 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getBodyParameter = exports.Body = void 0;
 require("reflect-metadata");
 const bodyMetadataKey = Symbol('body');
-const Body = (classTypeParam) => (target, propertyKey, parameterIndex) => {
-    const parameterTypes = Reflect.getMetadata('design:paramtypes', target, propertyKey);
-    const classType = classTypeParam ?? parameterTypes[parameterIndex].prototype.constructor;
+const Body = (classType) => (target, propertyKey, parameterIndex) => {
     Reflect.defineMetadata(bodyMetadataKey, {
         parameterIndex,
         classType,

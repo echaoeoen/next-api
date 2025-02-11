@@ -13,7 +13,7 @@ We provide the following built-in decorators for you to handle the HTTP method t
 Since Next.js expects the default export to be a request handler, we provide the `createHandler` function which accepts a class as the only parameter.
 
 ```ts
-import { createHandler, Get } from 'next-app-router-decorator';
+import { createHandler, Get } from '@aslina/next-app-router-decorator';
 
 class UserHandler {
   @Get()
@@ -30,7 +30,7 @@ module.exports = createHandler(UserHandler);
 In certain cases we may need to access the underlying request (`req`) object. We can access it by using the `@Req()` decorator.
 
 ```ts
-import { createHandler, Get, Req } from 'next-app-router-decorator';
+import { createHandler, Get, Req } from '@aslina/next-app-router-decorator';
 import { NextRequest } from 'next';
 
 class UserHandler {
@@ -50,7 +50,7 @@ In most cases, you won't need to access the request object since we provide deco
 By default, the response status code is `200`, unless the returned value is `null` or `undefined`. In that case, the response status code is `204`. However, it's possible to change it per route.
 
 ```ts
-import { createHandler, Post, Status } from 'next-app-router-decorator';
+import { createHandler, Post, Status } from '@aslina/next-app-router-decorator';
 
 class UserHandler {
   @Post()
@@ -68,7 +68,7 @@ module.exports = createHandler(UserHandler);
 Depending on your use case, you may either want to read a header value, set a custom one or do both. We provide `@Header` parameter decorator to read.
 
 ```ts
-import { createHandler, Get, Header, SetHeader } from 'next-app-router-decorator';
+import { createHandler, Get, Header, SetHeader } from '@aslina/next-app-router-decorator';
 
 class UserHandler {
   @Get()
@@ -85,7 +85,7 @@ module.exports = createHandler(UserHandler);
 In the [example](#status-code) above we created a `POST` request handler but we didn't expect the client to send any payload. Let's say, now we do want some data from the client, so first we need to determine the shape of the payload we expect. In order to do that we will use classes, which are part of the ES6 standard.
 
 ```ts
-import { createHandler, Post, Body } from 'next-app-router-decorator';
+import { createHandler, Post, Body } from '@aslina/next-app-router-decorator';
 
 class CreateUserInput {
   email: string;
@@ -135,10 +135,10 @@ export async function POST(req: NextRequest, p: { params }) {
 }
 ```
 
-However, with `next-app-router-decorator` you can write the same handler in a declarative manner:
+However, with `@aslina/next-app-router-decorator` you can write the same handler in a declarative manner:
 
 ```ts
-import { createHandler, Body, Get, HttpCode, NotFoundException, Post, Query, ValidationPipe } from 'next-app-router-decorator';
+import { createHandler, Body, Get, HttpCode, NotFoundException, Post, Query, ValidationPipe } from '@aslina/next-app-router-decorator';
 
 class User {
   @Get()

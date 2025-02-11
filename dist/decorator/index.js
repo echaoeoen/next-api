@@ -25,4 +25,5 @@ __exportStar(require("./api-query-decorator"), exports);
 __exportStar(require("./api-req-decorator"), exports);
 __exportStar(require("./api-request-ip-decorator"), exports);
 __exportStar(require("./api-res-decorator"), exports);
+__exportStar(require("./api-middleware-decorator"), exports);
 //# sourceMappingURL=index.js.map

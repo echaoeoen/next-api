@@ -2,7 +2,7 @@
 You can use Express.js-style route matching with parameters inside your handlers.
 ```ts
 // app/api/users/[[...params]]/route.ts
-import { createHandler, Get, Param } from 'next-app-router-decorator';
+import { createHandler, Get, Param } from '@aslina/next-app-router-decorator';
 
 class UserHandler {
   @Get()

@@ -2,7 +2,7 @@
 ## Basic usage
 
 ```ts
-import { createHandler, Get } from 'next-app-router-decorator';
+import { createHandler, Get } from '@aslina/next-app-router-decorator';
 
 class UserHandler {
   @Get()
@@ -23,7 +23,7 @@ The structure is heavily inspired by NestJS, which is an amazing framework for a
 ## Installation
 
 ```bash npm2yarn
-yarn install next-app-router-decorator
+yarn install @aslina/next-app-router-decorator
 ```
 
 ### Using with SWC

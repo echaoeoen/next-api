@@ -1,7 +1,7 @@
 # Page API Router
 you can use this decorator on page api router as well `pages/api/user.ts`
 ```ts
-import { createApiRouteHandler } from 'next-app-router-decorator'
+import { createApiRouteHandler } from '@aslina/next-app-router-decorator'
 
 class UserHandler {
   @Get()

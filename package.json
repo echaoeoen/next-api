@@ -1,5 +1,5 @@
 {
-  "name": "next-app-router-decorator",
+  "name": "@aslina/next-app-router-decorator",
   "version": "1.0.4",
   "description": "Nextjs API decorator helper",
   "main": "./dist/index.js",
@@ -7,6 +7,9 @@
   "files": [
     "dist"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "test": "jest",
     "build": "rimraf dist && tsc"
@@ -29,6 +32,7 @@
   },
   "homepage": "https://github.com/echaoeoen/next-api#readme",
   "dependencies": {
+    "@aslina/app-context": "^1.1.7",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "cookies-next": "^4.2.1",

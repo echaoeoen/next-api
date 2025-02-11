@@ -1,3 +1,10 @@
+## [1.0.6](https://github.com/echaoeoen/next-api/compare/v1.0.5...v1.0.6) (2025-02-11)
+
+
+### Bug Fixes
+
+* support path for delete decorator ([936a26f](https://github.com/echaoeoen/next-api/commit/936a26fcf819a0f80d1e9e1f81baaddd8bf42df7))
+
 ## [1.0.5](https://github.com/echaoeoen/next-api/compare/v1.0.4...v1.0.5) (2025-02-11)
 
 

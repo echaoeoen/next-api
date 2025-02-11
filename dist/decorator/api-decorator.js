@@ -119,7 +119,7 @@ const PUT = (path) => (0, exports.HandleDecorator)('PUT', path);
 exports.PUT = PUT;
 const PATCH = (path) => (0, exports.HandleDecorator)('PATCH', path);
 exports.PATCH = PATCH;
-const DELETE = () => (0, exports.HandleDecorator)('DELETE');
+const DELETE = (path) => (0, exports.HandleDecorator)('DELETE', path);
 exports.DELETE = DELETE;
 const OPTIONS = (path) => (0, exports.HandleDecorator)('OPTIONS', path);
 exports.OPTIONS = OPTIONS;

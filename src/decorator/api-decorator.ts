@@ -129,7 +129,7 @@ export const POST = (path?: string) => HandleDecorator('POST', path);
 export const GET = (path?: string) => HandleDecorator('GET', path);
 export const PUT = (path?: string) => HandleDecorator('PUT', path);
 export const PATCH = (path?: string) => HandleDecorator('PATCH', path);
-export const DELETE = () => HandleDecorator('DELETE');
+export const DELETE = (path?: string) => HandleDecorator('DELETE', path);
 export const OPTIONS = (path?: string) => HandleDecorator('OPTIONS', path);
 
 export const getHandlerMetadata = (target: any, method: string): {

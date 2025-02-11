@@ -1,3 +1,10 @@
+## [1.0.7](https://github.com/echaoeoen/next-api/compare/v1.0.6...v1.0.7) (2025-02-11)
+
+
+### Bug Fixes
+
+* fix path calculation ([c99b8f4](https://github.com/echaoeoen/next-api/commit/c99b8f4b782df2de8145a54454d2475d81c16ee0))
+
 ## [1.0.6](https://github.com/echaoeoen/next-api/compare/v1.0.5...v1.0.6) (2025-02-11)
 
 

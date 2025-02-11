@@ -31,7 +31,7 @@ function getHandler(handlers, req, params) {
             if (template[p] !== urlParts[p])
                 return false;
         }
-        return true;
+        return template.length === urlParts.length;
     });
     return handler;
 }
@@ -52,7 +52,7 @@ const createMethodHandler = (instance, method, c) => {
             return server_1.NextResponse.json({ message: 'Not found' }, { status: http_status_codes_1.StatusCodes.NOT_FOUND });
         const methodMiddlewares = (0, api_middleware_decorator_1.getMiddleware)(instance, handler.propertyKey);
         const handlerFn = {
-            fn: (req) => instance[handler?.propertyKey].apply(instance, [req, p])
+            fn: (req) => instance[handler?.propertyKey].apply(instance, [req, p, handler.path])
         };
         const middlewares = [...globalMiddlewares, ...methodMiddlewares, handlerFn];
         const [error, resp] = await (0, utils_1.awaitToError)(executeMiddlewares(middlewares, req));
@@ -84,7 +84,6 @@ exports.createHandler = createHandler;
 const createApiRouteHandler = (target) => {
     const instance = new target();
     const globalMiddlewares = (0, api_middleware_decorator_1.getMiddleware)(target);
-    console.log(globalMiddlewares);
     return async (req, res) => {
         const handlers = (0, api_decorator_1.getHandlerMetadata)(instance, req.method);
         if (handlers.length === 0) {
@@ -98,7 +97,7 @@ const createApiRouteHandler = (target) => {
         }
         const methodMiddlewares = (0, api_middleware_decorator_1.getMiddleware)(instance, handler?.propertyKey);
         const handlerFn = {
-            fn: (req) => instance[handler?.propertyKey].apply(this, [req, { res }])
+            fn: (req) => instance[handler?.propertyKey].apply(this, [req, { res }, handler?.path])
         };
         const middlewares = [...globalMiddlewares, ...methodMiddlewares, handlerFn];
         const [error, resp] = await (0, utils_1.awaitToError)(executeMiddlewares(middlewares, req));
